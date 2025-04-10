@@ -589,7 +589,7 @@ void drawLevelStatus() {
 // Handle keyboard input
 void keyPressed() {
   if (gameState == 0) {
-    // Menu controls
+    // Menu controls - keep arrow keys for menu navigation
     if (keyCode == UP) {
       selectedOption = (selectedOption - 1 + 3) % 3;
     } else if (keyCode == DOWN) {
@@ -600,7 +600,7 @@ void keyPressed() {
   } else if (gameState == 1) {
     // Check if in boss dialogue for level 2
     boolean inDialogue = false;
-    if (currentLevel.levelNumber == 2) {
+    if (currentLevel.levelNumber == 2 && dialogueSystem != null) {
       inDialogue = !dialogueSystem.dialogueComplete;
       
       // Allow skipping/advancing dialogue with ENTER
@@ -612,26 +612,20 @@ void keyPressed() {
     
     // Game controls - restrict movement during dialogue
     if (!inDialogue) {
-      if (keyCode == LEFT) {
+      // WASD movement controls
+      if (key == 'a' || key == 'A') {
         player.moveLeft();
-      } else if (keyCode == RIGHT) {
+      } else if (key == 'd' || key == 'D') {
         player.moveRight();
-      } else if (keyCode == UP) {
+      } else if (key == 'w' || key == 'W') {
         player.jump();
-      } else if (keyCode == DOWN) {
-        player.crouch();
-      } else if (key == 'h' || key == 'H') {
-        player.toggleHiding();
+      } else if (key == 's' || key == 'S') {
+        player.toggleHiding(); // S is now for hiding/stealth
       } 
     }
     
-    // Always allow space to fire in level 2, but the firing method will check if dialogue is active
-    if (key == ' ' && currentLevel.levelNumber == 2 && player instanceof CyberpunkPlayer) {
-      ((CyberpunkPlayer)player).fireProjectile();
-    }
-    
     // Debug key to skip dialogue
-    if (key == 'd' && currentLevel.levelNumber == 2) {
+    if (key == '`' && currentLevel.levelNumber == 2 && dialogueSystem != null) {
       dialogueSystem.skipDialogue();
       player.invincibilityFrames = 60;
       robotVillain.dialogueComplete = true;
@@ -653,11 +647,19 @@ void keyPressed() {
 void keyReleased() {
   if (gameState == 1) {
     // Stop movement when keys are released
-    if (keyCode == LEFT || keyCode == RIGHT) {
+    if (key == 'a' || key == 'A' || key == 'd' || key == 'D') {
       player.stopMoving();
     }
-    if (keyCode == DOWN) {
-      player.stopCrouching();
+  }
+}
+
+// Add mouse handling for shooting
+void mousePressed() {
+  // Handle shooting with left mouse button
+  if (mouseButton == LEFT && gameState == 1) {
+    // Only in level 2 and if player is CyberpunkPlayer
+    if (currentLevel.levelNumber == 2 && player instanceof CyberpunkPlayer) {
+      ((CyberpunkPlayer)player).fireProjectile();
     }
   }
 }
