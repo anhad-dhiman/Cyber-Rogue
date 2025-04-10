@@ -14,7 +14,7 @@ class Drone extends GameObject {
   Drone(float x, float y, float levelWidth) {
     super(x, y);
     state = DroneState.PATROLLING;
-    detectionRadius = 150;
+    detectionRadius = 0;
     patrolSpeed = 2;
     aggressionLevel = 1;
     this.levelWidth = levelWidth;

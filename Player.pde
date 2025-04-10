@@ -1,3 +1,4 @@
+
 // Player class
 class Player extends Character {
   int score;
