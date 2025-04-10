@@ -571,19 +571,24 @@ void drawMenuOptions() {
   }
 }
 
-// Draw level status indicators
+// Draw level status indicators and controls info
 void drawLevelStatus() {
   textAlign(LEFT);
   textSize(16);
   
   fill(200);
-  text("NAVIGATION: ARROW KEYS", 20, height - 60);
-  text("SELECT: ENTER", 20, height - 30);
+  text("MENU NAVIGATION: ARROW KEYS", 20, height - 90);
+  text("SELECT: ENTER", 20, height - 60);
+  
+  // Draw control scheme
+  fill(neonBlue, 150);
+  text("GAME CONTROLS:", 20, height - 30);
+  text("W,A,D - MOVE   |   S - HIDE   |   MOUSE - AIM & SHOOT", 180, height - 30);
   
   // Draw version number in corner
   textAlign(RIGHT);
   fill(100);
-  text("v0.1", width - 20, height - 20);
+  text("v0.2", width - 20, height - 20);
 }
 
 // Handle keyboard input
